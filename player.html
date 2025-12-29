@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Christmas - Holiday Card</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a0a0a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Snowflakes */
+        .snowflakes {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: #fff;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px #fff;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Title */
+        h1 {
+            color: #ff4444;
+            margin: 15px 0 20px 0;
+            text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000;
+            font-size: 3em;
+        }
+
+        .subtitle {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        /* Video Section */
+        .video-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 10px 0;
+        }
+
+        /* Christmas Trees */
+        .tree {
+            color: #228b22;
+            font-size: 14px;
+            line-height: 1.2;
+            white-space: pre;
+            text-shadow: 0 0 10px #0a4a0a;
+        }
+
+        .star { color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00; }
+
+        .ornament { font-weight: bold; }
+        .red { color: #ff0000; text-shadow: 0 0 8px #ff0000; }
+        .blue { color: #00aaff; text-shadow: 0 0 8px #00aaff; }
+        .gold { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
+        .pink { color: #ff69b4; text-shadow: 0 0 8px #ff69b4; }
+        .green { color: #00ff00; text-shadow: 0 0 8px #00ff00; }
+
+        .trunk { color: #8b4513; text-shadow: 0 0 5px #5a2d0a; }
+        .snow { color: #aaddff; text-shadow: 0 0 8px #aaddff; }
+
+        /* Video Display */
+        .video-container {
+            border: 5px solid #2d5a27;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3), 0 0 60px rgba(0, 255, 0, 0.2), 0 0 80px rgba(255, 215, 0, 0.2);
+        }
+
+        #video {
+            display: block;
+            width: 640px;
+            height: 360px;
+            background: #000;
+        }
+
+        /* Controls */
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #c41e3a, #8b0000);
+            color: #fff;
+            border: 3px solid #ff6b6b;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff6b6b, #c41e3a);
+            box-shadow: 0 0 30px rgba(255, 100, 100, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* Karaoke Lyrics */
+        .lyrics-container {
+            margin: 20px 0;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .lyric-current {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00;
+            margin: 10px 0;
+            min-height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .lyric-next {
+            font-size: 20px;
+            color: #666;
+            min-height: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .lyric-current.chorus {
+            color: #ff6b6b;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff4444;
+        }
+
+        .lyric-current.highlight {
+            color: #00ff88;
+            text-shadow: 0 0 20px #00ff88, 0 0 40px #00aa55;
+        }
+
+        /* Footer */
+        .credit {
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .decorations {
+            font-size: 30px;
+            margin-top: 10px;
+        }
+
+        .ornament-swing {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="snowflakes" id="snow"></div>
+
+    <h1>Last Christmas</h1>
+    <div class="subtitle">~ A Holiday Card ~</div>
+
+    <div class="video-section">
+        <!-- Left Tree -->
+        <pre class="tree">        <span class="star">★</span>
+        ^
+       ^^^
+      ^^<span class="ornament red">●</span>^^
+     ^^^^^^^
+    ^^<span class="ornament blue">●</span>^^^<span class="ornament gold">●</span>^^
+   ^^^^^^^^^^^
+  ^^<span class="ornament pink">●</span>^^^<span class="ornament green">●</span>^^^<span class="ornament red">●</span>^^
+ ^^^^^^^^^^^^^^^
+^^<span class="ornament gold">●</span>^^^<span class="ornament blue">●</span>^^^<span class="ornament pink">●</span>^^^<span class="ornament green">●</span>^^
+      <span class="trunk">║██║</span>
+      <span class="trunk">║██║</span>
+   <span class="snow">~*~*~*~*~</span></pre>
+
+        <div class="video-container">
+            <video id="video" width="640" height="360" controls>
+                <source src="Wham! - Last Christmas (Official Video) - WhamVEVO (720p, h264, youtube).mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- Right Tree -->
+        <pre class="tree">        <span class="star">★</span>
+        ^
+       ^^^
+      ^^<span class="ornament gold">●</span>^^
+     ^^^^^^^
+    ^^<span class="ornament pink">●</span>^^^<span class="ornament red">●</span>^^
+   ^^^^^^^^^^^
+  ^^<span class="ornament blue">●</span>^^^<span class="ornament gold">●</span>^^^<span class="ornament pink">●</span>^^
+ ^^^^^^^^^^^^^^^
+^^<span class="ornament red">●</span>^^^<span class="ornament green">●</span>^^^<span class="ornament blue">●</span>^^^<span class="ornament gold">●</span>^^
+      <span class="trunk">║██║</span>
+      <span class="trunk">║██║</span>
+   <span class="snow">~*~*~*~*~</span></pre>
+    </div>
+
+    <div class="controls">
+        <button onclick="playVideo()">▶ Play</button>
+        <button onclick="restartVideo()">↺ Restart</button>
+    </div>
+
+    <div class="lyrics-container">
+        <div class="lyric-current" id="lyricCurrent"></div>
+        <div class="lyric-next" id="lyricNext"></div>
+    </div>
+
+    <div class="credit">Wham! - 1984</div>
+    <div class="decorations">
+        <span class="ornament-swing">🎄</span>
+        <span class="ornament-swing">🎅</span>
+        <span class="ornament-swing">🎁</span>
+        <span class="ornament-swing">🎄</span>
+        <span class="ornament-swing">🎅</span>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const lyricCurrent = document.getElementById('lyricCurrent');
+        const lyricNext = document.getElementById('lyricNext');
+
+        // Snowflakes
+        const snowChars = ['❄', '*'];
+        function addSnow() {
+            const s = document.createElement('div');
+            s.className = 'snowflake';
+            s.textContent = snowChars[Math.floor(Math.random() * snowChars.length)];
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = (Math.random() * 3 + 7) + 's';
+            s.style.fontSize = '14px';
+            document.getElementById('snow').appendChild(s);
+            setTimeout(() => s.remove(), 10000);
+        }
+        for (let i = 0; i < 10; i++) setTimeout(addSnow, Math.random() * 2000);
+        setInterval(addSnow, 800);
+
+        // Synced Lyrics
+        const lyrics = [
+            { time: 0, text: "🎵 🎶 🎵", type: "highlight" },
+            { time: 14, text: "Last Christmas", type: "chorus" },
+            { time: 17, text: "I gave you my heart", type: "chorus" },
+            { time: 21, text: "But the very next day you gave it away", type: "" },
+            { time: 26, text: "This year, to save me from tears", type: "" },
+            { time: 30, text: "I'll give it to someone special", type: "chorus" },
+            { time: 37, text: "Last Christmas", type: "chorus" },
+            { time: 40, text: "I gave you my heart", type: "chorus" },
+            { time: 44, text: "But the very next day you gave it away", type: "" },
+            { time: 49, text: "This year, to save me from tears", type: "" },
+            { time: 53, text: "I'll give it to someone special", type: "chorus" },
+            { time: 60, text: "🎵 🎶 🎵", type: "highlight" },
+            { time: 66, text: "Once bitten and twice shy", type: "" },
+            { time: 73, text: "I keep my distance, but you still catch my eye", type: "" },
+            { time: 80, text: "Tell me baby, do you recognize me?", type: "" },
+            { time: 87, text: "Well, it's been a year, it doesn't surprise me", type: "" },
+            { time: 95, text: "🎄 Merry Christmas 🎄", type: "highlight" },
+            { time: 97, text: "I wrapped it up and sent it", type: "" },
+            { time: 104, text: "With a note saying 'I love you', I meant it", type: "" },
+            { time: 111, text: "Now I know what a fool I've been", type: "" },
+            { time: 118, text: "But if you kissed me now, I know you'd fool me again", type: "" },
+            { time: 127, text: "Last Christmas", type: "chorus" },
+            { time: 130, text: "I gave you my heart", type: "chorus" },
+            { time: 134, text: "But the very next day you gave it away", type: "" },
+            { time: 139, text: "This year, to save me from tears", type: "" },
+            { time: 143, text: "I'll give it to someone special", type: "chorus" },
+            { time: 150, text: "Last Christmas", type: "chorus" },
+            { time: 153, text: "I gave you my heart", type: "chorus" },
+            { time: 157, text: "But the very next day you gave it away", type: "" },
+            { time: 162, text: "This year, to save me from tears", type: "" },
+            { time: 166, text: "I'll give it to someone special", type: "chorus" },
+            { time: 173, text: "🎵 🎶 🎵", type: "highlight" },
+            { time: 181, text: "A crowded room, friends with tired eyes", type: "" },
+            { time: 188, text: "I'm hiding from you and your soul of ice", type: "" },
+            { time: 196, text: "My God, I thought you were someone to rely on", type: "" },
+            { time: 203, text: "Me? I guess I was a shoulder to cry on", type: "" },
+            { time: 211, text: "A face on a lover with a fire in his heart", type: "" },
+            { time: 218, text: "A man undercover but you tore me apart", type: "" },
+            { time: 226, text: "Now I've found a real love", type: "chorus" },
+            { time: 230, text: "You'll never fool me again", type: "chorus" },
+            { time: 238, text: "Last Christmas", type: "chorus" },
+            { time: 241, text: "I gave you my heart", type: "chorus" },
+            { time: 245, text: "But the very next day you gave it away", type: "" },
+            { time: 250, text: "This year, to save me from tears", type: "" },
+            { time: 254, text: "I'll give it to someone special", type: "chorus" },
+            { time: 261, text: "🎄 Happy Christmas! 🎄", type: "highlight" }
+        ];
+
+        let currentLyricIdx = -1;
+
+        function updateLyrics() {
+            const time = video.currentTime;
+            let idx = -1;
+
+            for (let i = lyrics.length - 1; i >= 0; i--) {
+                if (time >= lyrics[i].time) {
+                    idx = i;
+                    break;
+                }
+            }
+
+            if (idx !== currentLyricIdx) {
+                currentLyricIdx = idx;
+                if (idx >= 0) {
+                    lyricCurrent.textContent = lyrics[idx].text;
+                    lyricCurrent.className = 'lyric-current ' + (lyrics[idx].type || '');
+                    if (idx + 1 < lyrics.length) {
+                        lyricNext.textContent = lyrics[idx + 1].text;
+                    } else {
+                        lyricNext.textContent = '';
+                    }
+                }
+            }
+        }
+
+        video.addEventListener('timeupdate', updateLyrics);
+        video.addEventListener('ended', () => {
+            lyricCurrent.textContent = '🎄 Happy Christmas! 🎄';
+            lyricCurrent.className = 'lyric-current highlight';
+            lyricNext.textContent = '';
+        });
+
+        function playVideo() {
+            video.play();
+        }
+
+        function restartVideo() {
+            video.currentTime = 0;
+            currentLyricIdx = -1;
+            lyricCurrent.textContent = '';
+            lyricNext.textContent = lyrics[0].text;
+            video.play();
+        }
+
+        lyricCurrent.textContent = '';
+        lyricNext.textContent = 'Press Play to start...';
+    </script>
+</body>
+</html>
